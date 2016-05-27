@@ -23,10 +23,14 @@ class Mailers::UserMailer < ActionMailer::Base
 
     images.each_with_index do |image, i|
       file = File.new(Rails.root.join('public/design/email_templates/layout', image))
+
       Asset.create!(:name => :template, :format => 'img', :index => i, :asset => file)
+
     end
+
     html_layout = File.new(Rails.root.join('public/design/email_templates/layout/email_template.html.erb'))
     Asset.create!(:name => :template, :format => 'html', :asset => html_layout)
+    
     @assets = Asset.assets :template
   end
 
@@ -35,12 +39,15 @@ class Mailers::UserMailer < ActionMailer::Base
 
     :activation_request,
     :activation,
+
     :waiting_list_confirmation,
     :seat_available,
+
     :certificate,
     :invoice,
     :course_reminder,
     :course_confirmation,
+
     :course_cancelation,
     :course_cancelation_admin,
     :certificates_to_be_mailed,
