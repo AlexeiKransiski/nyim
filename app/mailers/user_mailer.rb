@@ -4,13 +4,20 @@ class Mailers::UserMailer < ActionMailer::Base
 
   ADMIN_EMAIL = proc { }
   default :sender      => proc { Site.site(:admin_email) },
+
     :reply_to    => proc { Site.site(:admin_email) },
+
     :bcc         => proc { "#{Site.site(:admin_email)}, nyim.devel@gmail.com" },
     :parts_order => ['text/html']
 
   def layout_assets
+
     @assets ||= Asset.assets :template
+
+
     return @assets unless @assets.empty?
+
+
     images = ['shine.png', 'ribbon.png', 'footerbg.png', 'footerbg_light.png', 'chocolate_coffee_water_100.jpg',
               'nyimlogo.png', 'spacer.png', 'mail.png', 'facebook.gif', 'twitter.gif']
 
@@ -25,6 +32,7 @@ class Mailers::UserMailer < ActionMailer::Base
 
   MAILS = [
     :course_ends,
+
     :activation_request,
     :activation,
     :waiting_list_confirmation,
