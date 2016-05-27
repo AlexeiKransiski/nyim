@@ -4,35 +4,50 @@ class Mailers::UserMailer < ActionMailer::Base
 
   ADMIN_EMAIL = proc { }
   default :sender      => proc { Site.site(:admin_email) },
+
     :reply_to    => proc { Site.site(:admin_email) },
+
     :bcc         => proc { "#{Site.site(:admin_email)}, nyim.devel@gmail.com" },
     :parts_order => ['text/html']
 
   def layout_assets
+
     @assets ||= Asset.assets :template
+
+
     return @assets unless @assets.empty?
+
+
     images = ['shine.png', 'ribbon.png', 'footerbg.png', 'footerbg_light.png', 'chocolate_coffee_water_100.jpg',
               'nyimlogo.png', 'spacer.png', 'mail.png', 'facebook.gif', 'twitter.gif']
 
     images.each_with_index do |image, i|
       file = File.new(Rails.root.join('public/design/email_templates/layout', image))
+
       Asset.create!(:name => :template, :format => 'img', :index => i, :asset => file)
+
     end
+
     html_layout = File.new(Rails.root.join('public/design/email_templates/layout/email_template.html.erb'))
     Asset.create!(:name => :template, :format => 'html', :asset => html_layout)
+    
     @assets = Asset.assets :template
   end
 
   MAILS = [
     :course_ends,
+
     :activation_request,
     :activation,
+
     :waiting_list_confirmation,
     :seat_available,
+
     :certificate,
     :invoice,
     :course_reminder,
     :course_confirmation,
+
     :course_cancelation,
     :course_cancelation_admin,
     :certificates_to_be_mailed,
